@@ -1,0 +1,1 @@
+import {NextResponse} from 'next/server';import {db} from '@/lib/supabase';export async function GET(){const s=db();const [{data:employees},{data:rows}]=await Promise.all([s.from('employees').select('*').order('name'),s.from('transactions').select('*,submitter:employees(name)').order('submitted_at')]);return NextResponse.json({employees:employees||[],rows:rows||[]})}
