@@ -6,7 +6,7 @@ export async function GET() {
     const s = db();
     const [people, transactions] = await Promise.all([
       s.from('employees').select('*').order('name'),
-      s.from('transactions').select('*,submitter:employees(name)').order('submitted_at'),
+      s.from('transactions').select('*,submitter:employees!transactions_submitter_id_fkey(name)').order('submitted_at'),
     ]);
     if (people.error) throw new Error(`Unable to read employees: ${people.error.message}`);
     if (transactions.error) throw new Error(`Unable to read transactions: ${transactions.error.message}`);
